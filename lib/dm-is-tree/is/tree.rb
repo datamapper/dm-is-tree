@@ -96,13 +96,13 @@ module DataMapper
         def roots
           options = { tree_options[:child_key] => nil }
           options = { :order => Array(tree_options[:order]) }.merge(options) if tree_options[:order]
-          all options
+          all(options)
         end
 
         def first_root
           options = { tree_options[:child_key] => nil }
           options = { :order => Array(tree_options[:order]) }.merge(options) if tree_options[:order]
-          first options
+          first(options)
         end
       end
 
