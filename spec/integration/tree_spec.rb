@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-if HAS_SQLITE3 || HAS_MYSQL || HAS_POSTGRES
+describe DataMapper::Is::Tree do
 
-  describe DataMapper::Is::Tree do
+  supported_by :sqlite, :mysql, :postgres do
 
-    before(:all) do
+    before(:each) do
 
       class Category
         include DataMapper::Resource
@@ -15,7 +15,7 @@ if HAS_SQLITE3 || HAS_MYSQL || HAS_POSTGRES
         is :tree
       end
 
-      Category.auto_migrate!
+      DataMapper.auto_migrate!
 
       @root_a = Category.create(:name => 'a root')
       @root_b = Category.create(:name => 'b root')
