@@ -6,7 +6,7 @@ describe DataMapper::Is::Tree do
 
     before(:each) do
 
-      class Category
+      class ::Category
         include DataMapper::Resource
 
         property :id, Serial
