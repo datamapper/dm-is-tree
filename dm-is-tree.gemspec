@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Timothy Bennett"]
-  s.date = %q{2010-05-19}
+  s.date = %q{2010-05-23}
   s.description = %q{DataMapper plugin allowing the creation of tree structures from data models}
   s.email = %q{leapord729 [a] comcast.net}
   s.extra_rdoc_files = [
@@ -38,7 +38,7 @@ Gem::Specification.new do |s|
      "tasks/yard.rake",
      "tasks/yardstick.rake"
   ]
-  s.homepage = %q{http://github.com/datamapper/dm-more/tree/master/dm-is-tree}
+  s.homepage = %q{http://github.com/datamapper/dm-is-tree}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubyforge_project = %q{datamapper}
