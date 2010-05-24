@@ -15,6 +15,8 @@ describe DataMapper::Is::Tree do
         is :tree
       end
 
+      DataMapper.finalize
+
       DataMapper.auto_migrate!
 
       @root_a = Category.create(:name => 'a root')
