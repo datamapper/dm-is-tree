@@ -17,7 +17,7 @@ module DataMapper
       #   class Category
       #     include DataMapper::Resource
       #
-      #     property :id, Integer
+      #     property :id, Serial
       #     property :parent_id, Integer
       #     property :name, String
       #
