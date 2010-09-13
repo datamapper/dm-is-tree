@@ -20,7 +20,7 @@ Download or clone <tt>dm-is-versioned</tt> from Github[http://github.com/datamap
   $ cd /path/to/dm-is-tree
 
   $ rake install            # will install dm-is-tree
-  
+
 
 
 == Getting started
@@ -51,11 +51,11 @@ To achieve this we just add the following to the model:
 
   class Category
     <snip...>
-    
+
     is :tree, :order => :name
-    
+
   end
-  
+
   # No need to define the :parent_id property, it will be added automatically
   property :parent_id,  Integer
 
@@ -64,18 +64,18 @@ This will automatically add the following to your model:
 
 === Instance Methods
 
-* <tt>#parent</tt> / <tt>#parent=</tt> 
+* <tt>#parent</tt> / <tt>#parent=</tt>
 * <tt>#children</tt> / <tt>#children=</tt>
 * <tt>#siblings</tt>
 * <tt>#generation</tt>
-* <tt>#ancestors</tt> 
+* <tt>#ancestors</tt>
   - also aliased as <tt>#self_and_siblings</tt> for those used to AR's :acts_as_tree
-* <tt>#root</tt> 
+* <tt>#root</tt>
   - also aliased as <tt>#first_root</tt> for those used to AR's :acts_as_tree
 
 === Class Methods
 
-* <tt>#first_root</tt> 
+* <tt>#first_root</tt>
 * <tt>#roots</tt>
 
 
@@ -83,29 +83,29 @@ This will automatically add the following to your model:
 
 Before we go onto the usage examples, a few quick words about configuration options available:
 
-=== <tt>:child_key</tt> 
+=== <tt>:child_key</tt>
 
 Specifies the column name to use for tracking of the tree (default: <tt>#parent_id</tt>).
 
   class Category
     <snip...>
-    
-    is :tree, :child_key => :some_other_foreign_key_id
-    
-  end
-  
 
-=== <tt>:model</tt> 
+    is :tree, :child_key => :some_other_foreign_key_id
+
+  end
+
+
+=== <tt>:model</tt>
 
 Specifies the name of the Model to use for the tree (default: Model class name defined in)
 
   class Category
     <snip...>
-    
+
     is :tree, :model => 'SomeStrangeModelName'
-    
+
   end
-  
+
 
 === <tt>:order</tt> [Optional]
 
@@ -113,9 +113,9 @@ Specifies the sort order of the children when retrieving them (default: not pres
 
   class Category
     <snip...>
-    
+
     is :tree, :order => [:updated_at, :name]
-    
+
   end
 
 
@@ -123,10 +123,10 @@ Specifies the sort order of the children when retrieving them (default: not pres
 == Usage
 
 To create the above structure, we would start with:
-  
+
   the_parent = Category.create(:name => "the_parent")
-  
-  
+
+
 === <tt>#parent</tt> & <tt>#parent=</tt>
 
 The <tt>#parent</tt> instance method returns the node referenced by the foreign key - <tt>:parent_id</tt>
@@ -134,154 +134,154 @@ or the defined <tt>:child_key</tt>.
 
   # by default #parent and #parent_id return nil when there is no parent
   the_parent.parent  # => nil
-  
+
 
 The <tt>#parent=</tt> instance method sets the <tt>:parent_id</tt> foreign key to the parent's id attribute value.
 
 To define a parent you can use either of these syntaxes:
 
   a_child = Category.create(:name => "a_child", :parent => the_parent)
-  
+
   a_child = Category.create(:name => "a_child", :parent_id => the_parent.id)
-  
+
   a_child = Category.create(:name => "a_child")
   a_child.parent = the_parent
-  
 
-When retrieving the parent, you will receive the full parent object ( or <tt>nil</tt> if none was declared ) 
-  
-  a_child.parent  # => the_parent 
-  
-  
+
+When retrieving the parent, you will receive the full parent object ( or <tt>nil</tt> if none was declared )
+
+  a_child.parent  # => the_parent
+
+
 === <tt>#children</tt> & <tt>#children=</tt>
 
-The <tt>#children</tt> instance method <b>returns all nodes with the current node as their parent</b>, 
+The <tt>#children</tt> instance method <b>returns all nodes with the current node as their parent</b>,
 in the order specified by the <tt>:order</tt> configuration option.
 
   # by default #children return an empty Array when there are no children
   a_child.children # => []
-  
+
   # or an Array with child objects when there are children
   the_parent.children # => [a_child]
-  
-  
-The <tt>#children=</tt> instance method adds children by setting the <tt>:parent_id</tt> foreign key 
+
+
+The <tt>#children=</tt> instance method adds children by setting the <tt>:parent_id</tt> foreign key
 to the parent's id attribute value.
 
 To add a child you can use either of these syntaxes:
-  
+
   child = the_parent.children.create(:name => "child")
-  
+
   grandchild1 = Category.create(:name => "grandchild1")
   child.children < grandchild1
-  
-  grandchild2 = child.children.create(:name => "grandchild2")
-  
- 
-When retrieving children, or a child, you will receive an Array of child objects. 
 
-  child.children # => [grandchild1, grandchild2,...] 
-  
+  grandchild2 = child.children.create(:name => "grandchild2")
+
+
+When retrieving children, or a child, you will receive an Array of child objects.
+
+  child.children # => [grandchild1, grandchild2,...]
+
   # just retrieve the first child
   child.children.first # => grandchild1
-  
+
 
 
 === <tt>#siblings</tt>
-  
+
 The <tt>#siblings</tt> instance method <b>returns all the children of the parent, excluding the current node</b>.
 
   # by default #siblings return an empty Array when there are no siblings
   the_parent.siblings # => []
-  
+
   grandchild1.siblings # => [grandchild2]
-  
 
 
-=== <tt>#generation</tt> 
+
+=== <tt>#generation</tt>
 
 The <tt>#generation</tt> instance method returns all the children of the parent, <b>including the current node</b>.
 
   # by default #generation return an Array with itself only when it's a 'lonely child'
   the_parent.generation # => [the_parent]
-  
+
   #
   grandchild1.generation # => [grandchild1, grandchild2]
-  
 
 
-=== <tt>#ancestors</tt> 
+
+=== <tt>#ancestors</tt>
 
 The <tt>#ancestors</tt> instance method returns all the ancestors of the current node.
 
   # by default it returns an empty Array when born through immaculate conception (is root)
   the_parent.ancestors # => []
-  
+
   grandchild2.ancestors # => [the_parent, a_child]
-  
 
 
-=== <tt>#root</tt> 
 
-The <tt>#root</tt> instance method returns the root (parent) of the current node. 
-  
+=== <tt>#root</tt>
+
+The <tt>#root</tt> instance method returns the root (parent) of the current node.
+
   # by default returns itself only when it's the root node
   the_parent.root # =>  the_parent
-  
+
   a_child.root # => the_parent
-  
+
   grandchild2.root # => the_parent
-  
 
 
-=== <tt>self.#first_root</tt> 
+
+=== <tt>self.#first_root</tt>
 
 The <tt>#first_root</tt> class method returns the first root declared in the model.
-  
-  Category.first_root # =>  the_parent
-  
 
-=== <tt>self.#roots</tt> 
+  Category.first_root # =>  the_parent
+
+
+=== <tt>self.#roots</tt>
 
 The <tt>#roots</tt> class method returns an Array of the roots declared in the model.
-  
+
   Category.roots # =>  [the_parent]
-  
+
   parent2 = Category.create(:name => 'parent2')
-  
-  
+
+
   Category.roots # =>  [the_parent, parent2]
-  
+
 
 === Summary
-  
+
   parent = Category.create(:name => "parent")
-  
+
   child = root.children.create(:name => "child")
-  
+
   grandchild1 = child.children.create(:name => "grandchild1")
   grandchild2 = child.children.create(:name => "grandchild2")
-  
+
   parent.parent  # => nil
   child.parent  # => parent
-  
+
   parent.children  # => [child]
   parent.children.first.children.first  # => grandchild1
-  
+
   parent.siblings # => []
   grandchild1.siblings # => [grandchild2]
-  
+
   parent.generation # => [parent]
   grandchild1.generation # => [grandchild1, grandchild2]
-  
+
   parent.ancestors # => []
   grandchild2.ancestors # => [parent, child]
-  
+
   parent.root # =>  parent
   parent.root # => parent
   grandchild2.root # => parent
-  
-  
+
+
   Category.first_root  # => parent
   Category.roots  # => [parent]
 
@@ -289,7 +289,7 @@ The <tt>#roots</tt> class method returns an Array of the roots declared in the m
 
 == Gotchas
 
-Now there are some gotcha's that might not be entirely obvious to everyone, so let's clarify 
+Now there are some gotcha's that might not be entirely obvious to everyone, so let's clarify
 them here.
 
 === Prevent a node being made a child of it self
@@ -299,55 +299,55 @@ To prevent this, I would humbly suggest adding this custom validation code to yo
 
   class Category
     <snip...>
-    
+
     # prevent saving Category as child of self, except when new?
-    validates_with_method :parent_id, 
-                          :method => :category_cannot_be_made_a_child_of_self, 
+    validates_with_method :parent_id,
+                          :method => :category_cannot_be_made_a_child_of_self,
                           :unless => :new?
-    
+
     protected
-      
+
       def category_cannot_be_made_a_child_of_self
         if self.id === self.parent_id
-          return [ 
-            false, 
-            "A Category [ #{self.name} ] cannot be made a child of it self [ #{self.name} ]" 
+          return [
+            false,
+            "A Category [ #{self.name} ] cannot be made a child of it self [ #{self.name} ]"
           ]
         else
           return true
         end
       end
-    
+
   end
-  
+
 An example:
 
   parent = Category.create(:name => "parent")
   child = parent.children.create(:name => 'child')
-  
+
   child.parent = child
-  
+
   child.save  # => return false
-  
-  child.errors.on(:parent_id) 
+
+  child.errors.on(:parent_id)
     # => ["A Category [ child ] cannot be made a child of it self [ child ]"]
-  
-  
+
+
 === Sorting order within nodes
 
-By default the sorting order is alphabetic, but this spans the entire table (with all nodes), 
+By default the sorting order is alphabetic, but this spans the entire table (with all nodes),
 which might not be what you want.
 
-To prevent this, order the results by <tt>:parent_id</tt> first, and secondly by <tt>:name</tt> 
+To prevent this, order the results by <tt>:parent_id</tt> first, and secondly by <tt>:name</tt>
 or whatever you wish to sort by.
 
   class Category
     <snip...>
-    
+
     is :tree, :order => [:parent_id, :name]
-    
+
   end
-  
+
 
 That's about it.
 
@@ -385,4 +385,3 @@ See LICENSE for details.
 Credit also goes to these contributors[http://github.com/datamapper/dm-is-tree/contributors].
 
 Current Maintainer: Garrett Heaver (http://www.linkedin.com/pub/dir/garrett/heaver)
-
