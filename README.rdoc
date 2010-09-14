@@ -11,7 +11,7 @@ This requires <b>a foreign key property</b> for your model, which by default wou
 
 Install the <tt>dm-is-tree</tt> gem.
 
-  $ (sudo)? gem install dm-ist-tree
+  $ (sudo)? gem install dm-is-tree
 
 === Edge
 
