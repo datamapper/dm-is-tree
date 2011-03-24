@@ -83,6 +83,11 @@ describe DataMapper::Is::Tree do
       Category.relationships[:parent].options.should_not have_key(:order)
     end
 
+    it 'should allow a constraint option to be specified' do
+      Category.is :tree, :constraint => :destroy
+      Category.relationships[:parent].options.should have_key(:constraint)
+    end
+
   end
 
   describe "children relationship" do
