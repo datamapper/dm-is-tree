@@ -173,7 +173,7 @@ To add a child you can use either of these syntaxes:
   child = the_parent.children.create(:name => "child")
 
   grandchild1 = Category.create(:name => "grandchild1")
-  child.children < grandchild1
+  child.children << grandchild1
 
   grandchild2 = child.children.create(:name => "grandchild2")
 
@@ -260,7 +260,12 @@ The <tt>#roots</tt> class method returns an Array of the roots declared in the m
   child = parent.children.create(:name => "child")
 
   grandchild1 = child.children.create(:name => "grandchild1")
-  grandchild2 = child.children.create(:name => "grandchild2")
+
+  grandchild2 = Category.create(:name => "grandchild2")
+  child.children << grandchild2
+  
+  grandchild3 = Category.create(:name => "grandchild2")
+  grandchild3.parent = child
 
   parent.parent  # => nil
   child.parent  # => parent
