@@ -84,6 +84,13 @@ describe DataMapper::Is::Tree do
 
     end
 
+    describe "all_children instance method" do
+      it "should return all nodes below the current node recursively" do
+        Category.is :tree
+        @root_a.all_children.should == [@child_a,@grandchild_a,@grandchild_b,@child_b]
+      end
+    end
+
     describe "generation instance method" do
 
       it "should return all nodes which have the same parent as this node (including this node)" do

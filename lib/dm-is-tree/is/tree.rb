@@ -129,6 +129,17 @@ module DataMapper
         end
         alias_method :first_root, :root
 
+        # Returns all children recursively
+        def all_children
+          name = self
+          all_children = []
+          children.each do |child|
+            all_children << child
+            all_children.concat child.all_children
+          end
+          all_children
+        end
+
         # Returns all siblings of the current node.
         #
         #   grandchild1.siblings # => [grandchild2]
