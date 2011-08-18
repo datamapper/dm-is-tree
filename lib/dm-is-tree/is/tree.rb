@@ -131,7 +131,6 @@ module DataMapper
 
         # Returns all children recursively
         def all_children
-          name = self
           all_children = []
           children.each do |child|
             all_children << child
