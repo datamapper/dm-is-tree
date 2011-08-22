@@ -119,6 +119,14 @@ module DataMapper
           nodes.reverse
         end
 
+        # Returns a list of anchestors and self, starting with the root
+        #
+        #  grandchild1.ancestors_with_self # => [root, child, grandchild]
+        #
+        def ancestors_with_self
+          ancestors << self
+        end
+
         # Returns the root node of the current node’s tree.
         #
         #   grandchild1.root # => root
