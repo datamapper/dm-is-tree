@@ -263,7 +263,7 @@ The <tt>#roots</tt> class method returns an Array of the roots declared in the m
 
   grandchild2 = Category.create(:name => "grandchild2")
   child.children << grandchild2
-  
+
   grandchild3 = Category.create(:name => "grandchild2")
   grandchild3.parent = child
 
