@@ -119,6 +119,14 @@ module DataMapper
           nodes.reverse
         end
 
+        # Returns a list of anchestors and self, starting with the root
+        #
+        #  grandchild1.ancestors_with_self # => [root, child, grandchild]
+        #
+        def ancestors_with_self
+          ancestors << self
+        end
+
         # Returns the root node of the current node’s tree.
         #
         #   grandchild1.root # => root
@@ -128,6 +136,16 @@ module DataMapper
           node
         end
         alias_method :first_root, :root
+
+        # Returns all children recursively
+        def all_children
+          all_children = []
+          children.each do |child|
+            all_children << child
+            all_children.concat child.all_children
+          end
+          all_children
+        end
 
         # Returns all siblings of the current node.
         #
