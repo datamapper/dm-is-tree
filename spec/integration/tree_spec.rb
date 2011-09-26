@@ -67,6 +67,14 @@ describe DataMapper::Is::Tree do
 
     end
 
+    describe "ancestors_with_self instance method" do
+      
+      it "should return the list of ancestors the the current node up to its root including the current node" do
+        Category.is :tree
+        @grandchild_a.ancestors_with_self.should == [@root_a, @child_a, @grandchild_a]
+      end
+    end
+
     describe "root instance method" do
 
       it "should return the root node for the current instance" do
@@ -82,6 +90,13 @@ describe DataMapper::Is::Tree do
         @child_a.siblings.should == [@child_b]
       end
 
+    end
+
+    describe "all_children instance method" do
+      it "should return all nodes below the current node recursively" do
+        Category.is :tree
+        @root_a.all_children.should == [@child_a,@grandchild_a,@grandchild_b,@child_b]
+      end
     end
 
     describe "generation instance method" do
