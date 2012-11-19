@@ -15,7 +15,7 @@ Install the <tt>dm-is-tree</tt> gem.
 
 === Edge
 
-Download or clone <tt>dm-is-versioned</tt> from Github[http://github.com/datamapper/dm-is-tree/].
+Download or clone <tt>dm-is-tree</tt> from Github[http://github.com/datamapper/dm-is-tree/].
 
   $ cd /path/to/dm-is-tree
 
